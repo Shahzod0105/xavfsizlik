@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Iqtisodiy xavfsizlik — amaliy platforma</title>
+<meta name="description" content="«Korxonaning iqtisodiy xavfsizligi» fani bo'yicha 14 ta amaliy mashg'ulot: bankrotlik diagnostikasi, Altman va MDH modellari, kreditga layoqatlilik, pul oqimlari va boshqalar.">
+<link rel="canonical" href="https://xavfsizlik.yaxshiyev.uz/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a teacher's practical workbook — clear, rigorous, calm
+   IDEA: a security control room: one data desk feeding 14 analysis stations
+   PICTURE: the 14-station board on the home view, each tile shows its live verdict
+   COLOUR and TYPE: sea-teal, warm paper, orange accent; green/amber/red only for verdicts; Onest
+   LAYOUT: teal header, home grid of 14 stations, data desk with two-period table, one station per view */
+:root{color-scheme:light dark;
+--bg:light-dark(#f6f2ea,#0f1a1b);--card:light-dark(#fffdf8,#162426);--ink:light-dark(#14211f,#ece7dd);
+--mut:light-dark(#55615e,#a9b3ae);--line:light-dark(#e2dbcd,#2a3e3f);
+--sea:#0f4c4a;--sea2:#0b3836;--org:#f26b1d;--orgt:light-dark(#b8490c,#ff9a5c);
+--good:light-dark(#1d7a46,#6fd39a);--mid:light-dark(#a86400,#f2b45a);--bad:light-dark(#b42318,#ff8a80)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Onest,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+.wrap{max-width:1140px;margin:0 auto;padding-inline:max(5vw,16px)}
+header{background:var(--sea);color:#f6f2ea}
+.top{display:flex;align-items:center;gap:10px 16px;padding-block:12px;flex-wrap:wrap}
+.logo{font-weight:800;display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo i{width:34px;height:34px;border-radius:8px;background:var(--org);display:grid;place-items:center;font-style:normal;color:#fff;font-size:14px}
+.nav{margin-inline-start:auto;display:flex;gap:6px;flex-wrap:wrap}
+.nav a{text-decoration:none;min-height:40px;display:inline-flex;align-items:center;padding:0 14px;border-radius:999px;border:1px solid #ffffff33;font-weight:600;font-size:14px}
+.nav a[aria-current=page]{background:var(--org);border-color:var(--org)}
+.hero{padding-block:clamp(22px,4vw,44px)}
+h1{font-size:clamp(28px,4.2vw,46px);line-height:1.06;margin:0 0 10px;text-wrap:balance;max-width:20em}
+.hero p{margin:0;opacity:.9;max-width:44em}
+.prog{display:flex;gap:4px;margin-top:18px;max-width:560px}
+.prog i{flex:1;height:8px;border-radius:4px;background:#ffffff22}
+.prog i.g{background:#6fd39a}.prog i.m{background:#f2b45a}.prog i.r{background:#ff8a80}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--org);outline-offset:2px}
+main{padding-block:28px 40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:14px}
+.tile{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 14px;align-items:start;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;transition:border-color .2s,transform .2s}
+.tile:hover{border-color:var(--org);transform:translateY(-2px)}
+.tile .n{width:44px;height:44px;border-radius:50%;border:3px solid var(--org);display:grid;place-items:center;font-weight:800;color:var(--orgt);grid-row:span 2}
+.tile b{font-size:15px;line-height:1.3}
+.tile span.st{font-size:13px;font-weight:600}
+@media(prefers-reduced-motion:reduce){.tile{transition:none}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,3vw,30px);margin-bottom:20px}
+.kicker{color:var(--orgt);font-weight:700;font-size:14px;margin:0 0 6px}
+h2{font-size:clamp(21px,2.6vw,28px);line-height:1.18;margin:0 0 10px;text-wrap:balance}
+h3{font-size:18px;margin:22px 0 10px}
+.theory{color:var(--mut);margin:0 0 18px;max-width:62em}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px 18px}
+label{display:block;font-weight:500;font-size:15px}
+label small{display:block;color:var(--mut);font-weight:400;font-size:13px}
+input,select,textarea{width:100%;margin-top:6px;font:16px Onest,sans-serif;padding:10px 12px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+input.num{text-align:end;font-variant-numeric:tabular-nums}
+textarea{min-height:150px;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:start;vertical-align:middle}
+th{font-size:13px;color:var(--mut);font-weight:600}
+td.v,th.v{text-align:end;font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--mut);font-size:12.5px}
+td input{margin:0;min-height:40px;padding:6px 10px}
+.sec td{background:color-mix(in srgb,var(--sea) 10%,transparent);font-weight:700}
+.g{color:var(--good)}.m{color:var(--mid)}.r{color:var(--bad)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:currentColor;margin-right:6px}
+.verdict{display:flex;gap:10px 18px;align-items:center;flex-wrap:wrap;padding:14px 18px;border-radius:14px;margin:16px 0;border:2px solid currentColor;background:var(--bg)}
+.verdict b{font-size:20px}
+.verdict p{margin:0;color:var(--ink);flex:1 1 300px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center}
+.btn{font:600 15px Onest,sans-serif;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn.main{background:var(--org);border-color:var(--org);color:#fff}
+.btn.right{margin-inline-start:auto}
+.empty{padding:18px;border-radius:12px;background:color-mix(in srgb,var(--mid) 14%,transparent)}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);font-weight:400}
+.chk input{width:22px;height:22px;min-height:0;margin:2px 0 0;flex:none;accent-color:var(--org)}
+.chk em{font-style:normal;font-size:12.5px;font-weight:700;margin-inline-start:6px}
+.hbar{height:10px;border-radius:5px;background:var(--line);overflow:hidden;min-width:60px}
+.hbar i{display:block;height:100%;background:var(--org)}
+.hbar.exp i{background:var(--sea)}
+.note{font-size:13.5px;color:var(--mut);margin-top:14px}
+.auth{max-width:460px;margin:0 auto}.tabs{display:flex;gap:6px;margin-bottom:16px}.tabs button{flex:1}.tabs button[aria-pressed=true]{background:var(--org);border-color:var(--org);color:#fff}
+.auth .fields{grid-template-columns:minmax(0,1fr)}.who{font-size:14px;opacity:.85}
+.mods{display:grid;grid-template-columns:repeat(14,14px);gap:3px}.mods i{width:14px;height:14px;border-radius:3px;background:var(--line);display:block}.mods i.g{background:var(--good)}.mods i.m{background:var(--mid)}.mods i.r{background:var(--bad)}
+.pill{font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}.pill.ok{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}.pill.wait{background:color-mix(in srgb,var(--mid) 18%,transparent);color:var(--mid)}
+.imp{border:1px dashed var(--org);border-radius:14px;padding:16px 18px;margin-bottom:18px;background:color-mix(in srgb,var(--org) 6%,transparent)}
+.imsg{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:14.5px}.imsg.ok{background:color-mix(in srgb,var(--good) 14%,transparent)}.imsg.bad{background:color-mix(in srgb,var(--bad) 12%,transparent)}.imsg.warn{background:color-mix(in srgb,var(--mid) 14%,transparent)}
+.rng{display:flex;align-items:center;gap:10px}
+.rng input[type=range]{accent-color:var(--org);padding:0;min-height:30px;border:0;background:none}
+footer{color:var(--mut);font-size:14px;padding-block:6px 40px}
+[hidden]{display:none!important}
+@media(max-width:600px){.btn.right{margin-inline-start:0}table{font-size:14px}th,td{padding:8px 6px}}
+@media print{header .nav,.bar{display:none}body{background:#fff}.panel{border:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <a class="logo" href="https://yaxshiyev.uz/"><i>Y</i><span>Iqtisodiy xavfsizlik</span></a>
+    <nav class="nav"><a href="#" id="nh">14 bo'lim</a><a href="#data" id="nd">Ma'lumotlar</a><a href="#admin" id="na" hidden>Admin</a><a href="#" id="nout" hidden>Chiqish</a></nav>
+  </div>
+  <div class="wrap hero">
+    <h1>Korxonaning iqtisodiy xavfsizligi: amaliy platforma</h1>
+    <p>Hisobot ma'lumotlarini bir marta kiriting — 14 ta amaliy mashg'ulot shu ma'lumotlar asosida avtomatik hisoblanadi. Har bir bo'limda usul, formulalar va xulosa ko'rsatiladi.</p>
+    <div class="prog" id="prog" aria-hidden="true"></div>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+<footer class="wrap">Sh. Yaxshiyev, TDIU «Korxonaning iqtisodiy xavfsizligi» fani uchun · <a href="https://shahzod.yaxshiyev.uz/">shahzod.yaxshiyev.uz</a> · O'quv maqsadida foydalanish uchun.</footer>
+
+<script>
+/* ===== SOZLAMA: Supabase loyihangiz ma'lumotlari (Project Settings → API) ===== */
+window.IXP_CONFIG={SUPABASE_URL:"https://ibzdxkyvukpfhrdtfsgw.supabase.co",SUPABASE_ANON_KEY:"sb_publishable_XfkqdJHCboZ-BnpnwfmmLQ_ZMNh-5DP"};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js"></script>
+<script>
+{
+const MODS=["Davlatning iqtisodiy xavfsizligi darajasini baholash",
+"Tashkilotning bankrotlik tahdidlarini oldini olish maqsadida uning moliyaviy holatini diagnostika qilish",
+"Mezonlar va belgilar tizimini tahlil qilish asosida bankrotlikni diagnostika qilish",
+"Tashkilotlar moliyaviy barqarorligi va iqtisodiy xavfsizligiga ichki tahdidlarni integral baholash",
+"Tashkilotlar iqtisodiy xavfsizligiga potensial ichki tahdidlarni baholash va prognozlash usullari",
+"MDH mamlakatlarida ishlab chiqilgan modellar asosida tashkilotlar iqtisodiy xavfsizligiga tahdidlarni baholash",
+"Iqtisodiy tahlil qoidabuzarliklar va suiiste'molliklarni aniqlash hamda ularning oldini olish usuli sifatida",
+"Omillarning tashkilot moliyaviy natijalari va moliyaviy xavfsizligi o'zgarishiga ta'sirini tadqiq qilish",
+"Ko'rsatkichlar tizimini hisoblash va moliyaviy barqarorlik turini belgilash asosida tashkilot moliyaviy xavfsizligiga tahdidlarni aniqlash",
+"Pul oqimlari harakatining tashkilot iqtisodiy xavfsizligiga ta'sirini tadqiq qilish",
+"Tashkilotning kreditga layoqatliligini baholash",
+"Tashkilot iqtisodiy xavfsizligi darajasini alohida funksional tarkibiy qismlar bo'yicha baholash",
+"Xususiy mezonlar asosida tashkilot iqtisodiy xavfsizligi darajasini umumlashtiruvchi baholash",
+"Tashkilotga zarar yetkazish belgilarini aniqlash"];
+
+// ---------- data model ----------
+const FB=[["nca","Uzoq muddatli aktivlar — jami"],["inv","Tovar-moddiy zaxiralar"],["rec","Debitorlik qarzlari"],["stfi","Qisqa muddatli moliyaviy investitsiyalar"],["cash","Pul mablag'lari"],["ca","Joriy aktivlar — jami"],
+["eq","O'z mablag'lari manbalari — jami"],["re","Taqsimlanmagan foyda (qoplanmagan zarar)"],["ltl","Uzoq muddatli majburiyatlar"],["stl","Qisqa muddatli bank kreditlari va qarzlar"],["ap","Kreditorlik qarzlari"],["cl","Joriy majburiyatlar — jami"]];
+const FR=[["rev","Mahsulot sotishdan sof tushum"],["cogs","Sotilgan mahsulot tannarxi"],["op","Asosiy faoliyat foydasi (zarari)"],["int","Foizlar bo'yicha xarajatlar"],["ebt","Soliq to'lagunga qadar foyda"],["np","Sof foyda (zarar)"]];
+const SAMPLE={nca:[8600000,9100000],inv:[2100000,2400000],rec:[2600000,3100000],stfi:[150000,200000],cash:[750000,900000],ca:[6000000,7300000],
+eq:[7700000,8600000],re:[2100000,2950000],ltl:[2600000,2900000],stl:[1500000,1700000],ap:[2200000,2700000],cl:[4300000,4900000],
+rev:[19200000,21500000],cogs:[14700000,16300000],op:[2050000,2350000],int:[310000,340000],ebt:[1720000,1990000],np:[1380000,1580000]};
+const CF=[["c0","Davr boshidagi pul mablag'lari qoldig'i"],["oi","Operatsion faoliyat: kirim"],["oo","Operatsion faoliyat: chiqim"],["ii","Investitsiya faoliyati: kirim"],["io","Investitsiya faoliyati: chiqim"],["fi","Moliyaviy faoliyat: kirim"],["fo","Moliyaviy faoliyat: chiqim"]];
+const CFS={c0:750000,oi:23400000,oo:21100000,ii:120000,io:1450000,fi:1900000,fo:2720000};
+const ST=[["gdp","Real YaIM o'sishi, %",1,3],["inv","Investitsiyalarning YaIMdagi ulushi, %",1,25],["rd","Ilmiy-tadqiqot xarajatlari, YaIMga %",1,2],["infl","Inflyatsiya darajasi, % yillik",0,10],
+["unemp","Ishsizlik darajasi, %",0,7],["pov","Kambag'allik chegarasidan past aholi ulushi, %",0,7],["dec","Detsil koeffitsiyenti (boy 10% / kambag'al 10%), marta",0,8],["def","Davlat budjeti taqchilligi, YaIMga %",0,3],
+["debt","Davlat tashqi qarzi, YaIMga %",0,25],["res","Oltin-valyuta zaxiralari, import oylari",1,3],["food","Oziq-ovqat importining iste'moldagi ulushi, %",0,30],["manuf","Qayta ishlash sanoatining sanoatdagi ulushi, %",1,70]];
+const STS={gdp:5.6,inv:30,rd:0.2,infl:9.8,unemp:6.8,pov:11,dec:7.5,def:4,debt:33,res:9,food:20,manuf:80};
+
+let st={f:{},cf:{},sv:{},sth:{},ck:{},w12:{},s12:{},w13:{},bt:"",n1:2,n2:0.1};
+try{const o=JSON.parse(localStorage.getItem('ixp')||'null');if(o)st=Object.assign(st,o)}catch(e){}
+let cloudSave=()=>{};const save=()=>{try{localStorage.setItem('ixp',JSON.stringify(st))}catch(e){}cloudSave()};
+
+const num=v=>{const n=parseFloat(String(v??'').replace(/[\s ]/g,'').replace(',','.').replace(/[^\d.\-]/g,''));return isFinite(n)?n:0};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+const big=n=>isFinite(n)?Math.round(n).toLocaleString('ru-RU'):'—';
+const f2=(v,d=2)=>isFinite(v)?v.toFixed(d):'—';
+const pc=v=>isFinite(v)?(v*100).toFixed(1)+'%':'—';
+const D=p=>{const d={};[...FB,...FR].forEach(([k])=>d[k]=num((st.f[k]||[])[p]));d.ta=d.nca+d.ca;d.tl=d.ltl+d.cl;d.wc=d.ca-d.cl;d.sos=d.eq-d.nca;d.ebit=d.ebt+d.int;return d};
+const ready=()=>{const d=D(1);return d.ta>0&&d.cl>0&&d.eq!==0&&d.rev>0};
+const ready0=()=>{const d=D(0);return d.ta>0&&d.cl>0&&d.rev>0};
+const lvl=p=>p>=75?3:p>=50?2:p>=25?1:0;
+const LV=["Kritik","Past","O'rta","Yuqori"],LC=['r','r','m','g'];
+const V=(c,t,txt)=>`<div class="verdict ${c}"><b>${esc(t)}</b><p>${txt}</p></div>`;
+const empty=`<div class="empty">Bu bo'limni hisoblash uchun avval <a href="#data"><b>«Ma'lumotlar»</b></a> sahifasida 1-shakl va 2-shakl qatorlarini to'ldiring (yoki u yerdagi «Namuna ma'lumot» tugmasini bosing).</div>`;
+const cls=(v,gd,md,hi=1)=>!isFinite(v)?'':hi?(v>=gd?'g':v>=md?'m':'r'):(v<=gd?'g':v<=md?'m':'r');
+const tbl=(head,rows)=>`<div class="scroll"><table><thead><tr>${head.map((h,i)=>`<th class="${i?'v':''}">${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+const tr=(name,form,vals,norm,c)=>`<tr><td>${esc(name)}${form?`<small>${esc(form)}</small>`:''}</td>${vals.map((v,i)=>`<td class="v ${i==vals.length-1?c||'':''}">${v}</td>`).join('')}${norm!==undefined?`<td class="v">${norm}</td>`:''}</tr>`;
+
+// ---------- calculators (return {html, score 0..1|null}) ----------
+const IND=[["Joriy likvidlik","Joriy aktivlar / joriy majburiyatlar",d=>d.ca/d.cl,1.5,1,1,0],["Tezkor likvidlik","(Joriy aktivlar − zaxiralar) / joriy majburiyatlar",d=>(d.ca-d.inv)/d.cl,.8,.5,1,0],["Mutlaq likvidlik","(Pul + qisqa muddatli investitsiyalar) / joriy majburiyatlar",d=>(d.cash+d.stfi)/d.cl,.2,.1,1,0],
+["Avtonomiya koeffitsiyenti","O'z mablag'lari / balans",d=>d.eq/d.ta,.5,.4,1,1],["Moliyaviy leveraj","Majburiyatlar / o'z mablag'lari",d=>d.tl/d.eq,1,1.5,0,1],["O'z aylanma mablag'lari bilan ta'minlanganlik","(O'z mablag'lari − uzoq muddatli aktivlar) / joriy aktivlar",d=>d.sos/d.ca,.1,0,1,1],
+["Aktivlar rentabelligi (ROA)","Sof foyda / aktivlar",d=>d.np/d.ta,.05,0,1,2,1],["O'z kapitali rentabelligi (ROE)","Sof foyda / o'z mablag'lari",d=>d.np/d.eq,.1,0,1,2,1],["Sotish rentabelligi","Asosiy faoliyat foydasi / sof tushum",d=>d.op/d.rev,.1,0,1,2,1],
+["Aktivlar aylanuvchanligi","Sof tushum / aktivlar",d=>d.rev/d.ta,1,.5,1,3],["Debitorlik aylanuvchanligi","Sof tushum / debitorlik qarzlari",d=>d.rev/d.rec,6,3,1,3],["Kreditorlik qarzini qoplash","Debitorlik / kreditorlik qarzlari",d=>d.rec/d.ap,1,.7,1,3]];
+const GR=["Likvidlik","Moliyaviy barqarorlik","Rentabellik","Ishbilarmonlik faolligi"];
+const integ=p=>{const d=D(p);let s=0,n=0;IND.forEach(x=>{const v=x[2](d);if(isFinite(v)){n++;s+=x[5]?(v>=x[3]?2:v>=x[4]?1:0):(v<=x[3]?2:v<=x[4]?1:0)}});return n?s/(n*2)*100:NaN};
+
+const altman=d=>{const X1=d.wc/d.ta,X2=d.re/d.ta,X3=d.ebit/d.ta,X4=d.eq/d.tl,X5=d.rev/d.ta;
+ return{zpp:6.56*X1+3.26*X2+6.72*X3+1.05*X4,zp:.717*X1+.847*X2+3.107*X3+.42*X4+.998*X5,
+ taf:.53*(d.ebt/d.cl)+.13*(d.ca/d.tl)+.18*(d.cl/d.ta)+.16*(d.rev/d.ta),
+ spr:1.03*X1+3.07*X3+.66*(d.ebt/d.cl)+.4*X5,lis:.063*(d.ca/d.ta)+.092*(d.op/d.ta)+.057*X2+.001*(d.eq/d.tl)}};
+const cis=(d,d0)=>{const sk=2*(d.sos/d.ca)+.1*(d.ca/d.cl)+.08*(d.rev/d.ta)+.45*(d.op/d.rev)+(d.np/d.eq);
+ const costs=d.rev-d.op;const db=8.38*(d.wc/d.ta)+(d.np/d.eq)+.054*(d.rev/d.ta)+.63*(d.np/costs);
+ const loss=Math.max(0,-d.np);const liq=d.cash+d.stfi;
+ const X=[loss/d.eq,d.ap/d.rec,d.cl/liq,loss/d.rev,d.tl/d.eq,d.ta/d.rev];
+ const zf=.25*X[0]+.1*X[1]+.2*X[2]+.25*X[3]+.1*X[4]+.1*X[5];const x6p=d0&&d0.rev>0?d0.ta/d0.rev:X[5];const zn=1.57+.1*x6p;return{sk,db,zf,zn,X}};
+const dbProb=r=>r<0?["90–100%",'r',0]:r<.18?["60–80%",'r',.2]:r<.32?["35–50%",'m',.5]:r<.42?["15–20%",'g',.8]:["10% dan kam",'g',1];
+const stabType=d=>{const S1=d.sos-d.inv,S2=d.sos+d.ltl-d.inv,S3=d.sos+d.ltl+d.stl-d.inv;const k=[S1>=0,S2>=0,S3>=0];
+ const t=k[0]?0:k[1]?1:k[2]?2:3;return{S1,S2,S3,k,t}};
+const STT=[["Mutlaq barqaror",'g',"Zaxiralar to'liq o'z aylanma mablag'lari hisobidan qoplanadi.",1],["Me'yoriy barqaror",'g',"Zaxiralar o'z va uzoq muddatli qarz mablag'lari hisobidan qoplanadi.",.75],["Beqaror (noturg'un)",'m',"Zaxiralarni qoplash uchun qisqa muddatli kreditlar jalb etiladi — to'lov qobiliyati buzilishi xavfi bor.",.4],["Inqirozli",'r',"Zaxiralar asosiy manbalar bilan qoplanmaydi — korxona bankrotlik yoqasida.",0]];
+const sber=d=>{const K=[(d.cash+d.stfi)/d.cl,(d.cash+d.stfi+d.rec)/d.cl,d.ca/d.cl,d.eq/d.ta,d.op/d.rev];
+ const T=[[.1,.05],[.8,.5],[1.5,1],[.4,.25],[.15,0]];const W=[.11,.05,.42,.21,.21];
+ const C=K.map((k,i)=>!isFinite(k)?3:k>=T[i][0]?1:(i==4?k>T[i][1]:k>=T[i][1])?2:3);const S=C.reduce((a,c,i)=>a+c*W[i],0);return{K,C,W,T,S,cl:S<=1.25?1:S<=2.35?2:3}};
+const cfCalc=()=>{const c={};CF.forEach(([k])=>c[k]=num(st.cf[k]));c.on=c.oi-c.oo;c.in=c.ii-c.io;c.fn=c.fi-c.fo;c.net=c.on+c.in+c.fn;c.c1=c.c0+c.net;c.tin=c.oi+c.ii+c.fi;c.tout=c.oo+c.io+c.fo;return c};
+const cfReady=()=>{const c=cfCalc();return c.tin>0&&c.tout>0};
+const m2=()=>{const d=D(1),d0=D(0);const K1=d.ca/d.cl,K10=d0.cl?d0.ca/d0.cl:K1,K2=d.sos/d.ca;const bad=K1<st.n1||K2<st.n2;
+ const kv=(K1+6/12*(K1-K10))/st.n1,ku=(K1+3/12*(K1-K10))/st.n1;return{K1,K10,K2,bad,kv,ku,score:bad?(kv>=1?.5:0):(ku>=1?1:.6)}};
+const autoSigns=()=>{const d=D(1),d0=D(0),has0=ready0(),c=cfReady()?cfCalc():null;
+ const g=(a,b)=>b>0?(a-b)/b:NaN;
+ return{l1:has0&&d.op<0&&d0.op<0,l2:d.ca/d.cl<1,l3:d.tl/d.eq>1.5,l4:d.sos<0,l5:has0&&d.rev<d0.rev,l6:c?c.on<0:false,
+ l7:has0&&g(d.inv,d0.inv)>g(d.rev,d0.rev)+.05,
+ z1:has0&&g(d.rec,d0.rec)>g(d.rev,d0.rev)+.05,z2:has0&&g(d.inv,d0.inv)>g(d.rev,d0.rev)+.05,z3:has0&&d.rev>d0.rev&&d.np<d0.np,z4:has0&&g(d.ap,d0.ap)>g(d.rev,d0.rev)+.1,
+ z5:c?(c.on<0&&d.np>0):false,z6:has0&&d.cash<d0.cash*.7,z7:has0&&(d.ca/d.ta)<(d0.ca/d0.ta)-.1}};
+const S3A=[["l1","Asosiy faoliyatda ketma-ket ikki yil zarar",1],["l2","Joriy likvidlik koeffitsiyenti 1 dan past",1],["l3","Qarz mablag'larining o'z mablag'lariga nisbati 1,5 dan yuqori",1],["l4","O'z aylanma mablag'lari yetishmasligi (manfiy)",1],["l5","Sotish hajmining pasayishi",1],["l6","Operatsion faoliyatdan manfiy pul oqimi (10-bo'lim ma'lumotlari)",1],["l7","Zaxiralar sotishga nisbatan tez o'sishi (tovar aylanmasi sekinlashuvi)",2]];
+const S3M=[["m1","Muddati o'tgan kreditorlik qarzi va to'lovlarning muntazam kechiktirilishi",1],["m2","Budjet va budjetdan tashqari fondlarga qarzdorlik",1],["m3","Yuqori foizli qarzlarni qayta-qayta jalb qilish",1],["m4","Asosiy vositalarni qarzlarni qoplash uchun sotish",1],
+["m5","Bitta yirik mijoz yoki yetkazib beruvchiga bog'liqlik",2],["m6","Malakali kadrlar va rahbariyatning yo'qotilishi",2],["m7","Ishlab chiqarishning majburiy to'xtab qolishi, ritmsizligi",2],["m8","Uzoq muddatli shartnomalarning samarasizligi, yirik sud da'volari",2],["m9","Asosiy vositalarning eskirishi, investitsiyalar yetishmasligi",2]];
+const m3=()=>{const a=ready()?autoSigns():{};let g1=0,g2=0;S3A.forEach(([k,,g])=>{if(a[k]){g==1?g1++:g2++}});S3M.forEach(([k,,g])=>{if(st.ck[k]){g==1?g1++:g2++}});return{a,g1,g2,score:g1>=2?0:g1==1?.35:g2>=2?.65:1}};
+const S14A=[["z1","Debitorlik qarzlari sotishga nisbatan tez o'smoqda (to'lanmaydigan qarzlar, yashirin kreditlash)"],["z2","Zaxiralar sotishga nisbatan tez o'smoqda (yashirish, o'g'irlik, eskirgan tovar)"],["z3","Tushum o'sgani holda sof foyda kamaymoqda (xarajatlarning sun'iy oshirilishi)"],["z4","Kreditorlik qarzlari keskin o'smoqda"],["z5","Sof foyda bor, ammo operatsion pul oqimi manfiy (foyda «sifati» past)"],["z6","Pul mablag'lari 30% dan ko'proq kamaygan"],["z7","Aktivlar tarkibida joriy aktivlar ulushi keskin kamaygan (aktivlarni olib chiqish)"]];
+const S14M=[["y1","Bog'liq (affillangan) shaxslar bilan bozor narxidan farqli bitimlar"],["y2","Asossiz hisobdan chiqarishlar, zararlar va kamomadlar"],["y3","Naqd pulni hisobdan tez-tez va katta miqdorda yechib olish"],["y4","Bir kunlik (fiktiv) firmalar bilan shartnomalar"],["y5","Mol-mulkni bozor qiymatidan arzon sotish yoki ijaraga berish"],["y6","Xodimlarning manfaatlar to'qnashuvi, yashirin biznes"],["y7","Buxgalteriya hujjatlarining yo'qolishi yoki kechiktirilishi"],["y8","Tijorat sirlari va mijozlar bazasining sizib chiqishi"]];
+const m14=()=>{const a=ready()?autoSigns():{};const n=S14A.filter(([k])=>a[k]).length+S14M.filter(([k])=>st.ck[k]).length;return{a,n,score:n==0?1:n<=2?.6:n<=4?.3:0}};
+const m1=()=>{let s=0,n=0;const rows=ST.map(([k,name,hi,th0])=>{const th=num(st.sth[k]??th0)||th0,raw=st.sv[k];const has=raw!==undefined&&String(raw).trim()!=='';const x=num(raw);
+ let sc=NaN;if(has){sc=hi?(x<=0?0:Math.min(1,x/th)):(x<=th?1:th/x);s+=sc;n++}return{k,name,hi,th,x,has,sc}});return{rows,pct:n?s/n*100:NaN,n}};
+const comp12=[["fin","Moliyaviy",.3],["kad","Intellektual va kadrlar",.15],["tex","Texnik-texnologik",.15],["huq","Siyosiy-huquqiy",.1],["axb","Axborot",.1],["eko","Ekologik",.1],["kuch","Kuch (jismoniy himoya)",.1]];
+const m12=()=>{const fin=ready()?integ(1):NaN;let ws=0,s=0;const rows=comp12.map(([k,n,w0])=>{const w=num(st.w12[k]??w0);const v=k=='fin'?(isFinite(fin)?fin:num(st.s12[k]??60)):num(st.s12[k]??70);ws+=w;s+=w*v;return{k,n,w,v}});return{rows,pct:ws?s/ws:NaN,ws}};
+const crit13=()=>{const r=[];if(ready()){const d=D(1);
+ r.push(["m2","Bankrotlik diagnostikasi (Kv/Ku)",m2().score]);r.push(["m4","Integral baholash",integ(1)/100]);
+ const z=altman(d).zpp;r.push(["m5","Altman Z'' modeli",z>2.6?1:z>1.1?.5:0]);r.push(["m6","Davydova–Belikov modeli",dbProb(cis(d,ready0()?D(0):null).db)[2]]);
+ r.push(["m9","Moliyaviy barqarorlik turi",STT[stabType(d).t][3]]);const s=sber(d);r.push(["m11","Kreditga layoqatlilik sinfi",s.cl==1?1:s.cl==2?.5:0]);}
+ r.push(["m3","Bankrotlik belgilari",m3().score]);if(cfReady()){const c=cfCalc();r.push(["m10","Pul oqimlari likvidligi",Math.max(0,Math.min(1,c.tin/c.tout))])}
+ r.push(["m14","Zarar yetkazish belgilari",m14().score]);const p12=m12().pct;if(isFinite(p12))r.push(["m12","Funksional tarkibiy qismlar",p12/100]);return r};
+const m13=()=>{const r=crit13();let ws=0,s=0,lg=0;r.forEach(([k,,v])=>{const w=num(st.w13[k]??1);ws+=w;s+=w*v;lg+=w*Math.log(Math.max(v,.01))});return{r,add:ws?s/ws*100:NaN,geo:ws?Math.exp(lg/ws)*100:NaN}};
+
+// status for home tiles: [class, text]
+const status=i=>{try{switch(i){
+ case 1:{const r=m1();return r.n?[LC[lvl(r.pct)],Math.round(r.pct)+'% · '+LV[lvl(r.pct)]]:null}
+ case 2:if(!ready())return null;{const r=m2();return r.bad?(r.kv>=1?['m','Tiklash imkoni bor']:['r','Qoniqarsiz tuzilma']):(r.ku>=1?['g','Qoniqarli']:['m','Yo\'qotish xavfi'])}
+ case 3:{const r=m3();return r.g1||r.g2||ready()?[r.g1?'r':r.g2?'m':'g',`1-guruh: ${r.g1} · 2-guruh: ${r.g2}`]:null}
+ case 4:if(!ready())return null;{const p=integ(1);return[LC[lvl(p)],Math.round(p)+'% · '+LV[lvl(p)]]}
+ case 5:if(!ready())return null;{const z=altman(D(1)).zpp;return[z>2.6?'g':z>1.1?'m':'r',"Z'' = "+f2(z)]}
+ case 6:if(!ready())return null;{const p=dbProb(cis(D(1)).db);return[p[1],'Bankrotlik ehtimoli '+p[0]]}
+ case 7:{const b=benford();return b?[b.mc,'MAD = '+b.mad.toFixed(4)]:null}
+ case 8:if(!ready()||!ready0())return null;{const d=D(1),d0=D(0);const x=d.np/d.eq-d0.np/d0.eq;return[x>=0?'g':'r','ROE o\'zgarishi '+(x>=0?'+':'')+(x*100).toFixed(1)+' p.p.']}
+ case 9:if(!ready())return null;{const t=STT[stabType(D(1)).t];return[t[1],t[0]]}
+ case 10:if(!cfReady())return null;{const c=cfCalc(),k=c.tin/c.tout;return[k>=1?'g':'r','Likvidlik '+f2(k)]}
+ case 11:if(!ready())return null;{const s=sber(D(1));return[['','g','m','r'][s.cl],s.cl+'-sinf qarz oluvchi']}
+ case 12:{const r=m12();return isFinite(r.pct)?[LC[lvl(r.pct)],Math.round(r.pct)+'% · '+LV[lvl(r.pct)]]:null}
+ case 13:{const r=m13();return r.r.length>=3?[LC[lvl(r.add)],Math.round(r.add)+'% · '+LV[lvl(r.add)]]:null}
+ case 14:{const r=m14();return r.n||ready()?[r.n==0?'g':r.n<=2?'m':'r',r.n+' ta belgi']:null}}}catch(e){}return null};
+
+// ---------- Benford ----------
+const benford=()=>{const nums=(st.bt||'').split(/[\n\r\t;|]+/).map(x=>x.trim()).filter(x=>/\d/.test(x));const fd=[];nums.forEach(t=>{const n=Math.abs(num(t));if(n>=10){fd.push(+String(Math.floor(n))[0])}});
+ if(fd.length<30)return null;const N=fd.length,cnt=Array(10).fill(0);fd.forEach(x=>cnt[x]++);let chi=0,mad=0;const rows=[];
+ for(let d=1;d<=9;d++){const e=Math.log10(1+1/d),o=cnt[d]/N;chi+=Math.pow(cnt[d]-e*N,2)/(e*N);mad+=Math.abs(o-e);rows.push({d,e,o,c:cnt[d]})}mad/=9;
+ const round=nums.filter(t=>{const n=Math.abs(num(t));return n>=1000&&n%1000===0}).length;const seen={},dup=nums.reduce((a,t)=>{const k=num(t);if(k>=1000){seen[k]=(seen[k]||0)+1;if(seen[k]==2)a++}return a},0);
+ const mc=mad<.006?'g':mad<.012?'g':mad<.015?'m':'r';const mt=mad<.006?"Yaqin moslik":mad<.012?"Qabul qilinadigan moslik":mad<.015?"Chegaraviy moslik":"Mos kelmaydi — chuqur tekshiruv tavsiya etiladi";
+ return{N,rows,chi,mad,mc,mt,round,dup,total:nums.length}};
+
+// ---------- views ----------
+const app=document.getElementById('app');
+const nav=(i)=>`<div class="bar">${i>1?`<a class="btn" href="#m${i-1}">← ${i-1}-bo'lim</a>`:''}<a class="btn" href="#">Barcha bo'limlar</a>${i<14?`<a class="btn main right" href="#m${i+1}">${i+1}-bo'lim →</a>`:''}</div>`;
+const head=(i,theory)=>`<p class="kicker">${i}-amaliy mashg'ulot</p><h2>${esc(MODS[i-1])}</h2><p class="theory">${theory}</p>`;
+const numIn=(path,val,ph='')=>`<input class="num" inputmode="decimal" data-p="${path}" value="${val===undefined||val===''?'':esc(val)}" placeholder="${ph}">`;
+
+const VIEWS={
+home(){return `<div class="grid">${MODS.map((m,i)=>{const s=status(i+1);return `<a class="tile" href="#m${i+1}"><span class="n">${i+1}</span><b>${esc(m)}</b><span class="st ${s?s[0]:''}">${s?'<span class="dot"></span>'+esc(s[1]):'<span style="color:var(--mut);font-weight:500">Ma\'lumot kiritilmagan</span>'}</span></a>`}).join('')}</div>
+<p class="note">Boshlash uchun <a href="#data">«Ma'lumotlar»</a> sahifasida korxona hisobotini kiriting. 1-, 7-, 10-, 12-bo'limlarda qo'shimcha ma'lumotlar o'sha bo'limning o'zida kiritiladi. Ma'lumotlar faqat sizning brauzeringizda saqlanadi.</p>`},
+data(){const row=([k,n])=>`<tr><td>${esc(n)}</td><td>${numIn('f.'+k+'.0',(st.f[k]||[])[0]!==undefined?big(num(st.f[k][0])):'')}</td><td>${numIn('f.'+k+'.1',(st.f[k]||[])[1]!==undefined?big(num(st.f[k][1])):'')}</td></tr>`;
+ const d0=D(0),d1=D(1);const chk=(d)=>d.ta?Math.abs(d.ta-(d.eq+d.tl))<1?`<span class="g">✓ ${big(d.ta)}</span>`:`<span class="r">${big(d.ta)} ≠ ${big(d.eq+d.tl)}</span>`:'—';
+ return `<div class="panel"><p class="kicker">Ma'lumotlar</p><h2>Korxona moliyaviy hisoboti</h2><p class="theory">Summalar ming so'mda. 1-shakl uchun — yil boshi va yil oxiri; 2-shakl uchun — o'tgan yil va hisobot yili. Hisobotni korxonaning STIR raqami bo'yicha <a href="https://orginfo.uz/" target="_blank" rel="noopener">orginfo.uz</a> saytidan topish mumkin.</p>
+ <div class="imp"><b>Avtomatik to'ldirish</b><p class="note" style="margin:4px 0 12px">openinfo.uz (Korporativ axborot yagona portali) yoki soliq kabinetidan yuklab olingan Excel hisobotni tanlang — 1-shakl va 2-shakl satr kodlari bo'yicha avtomatik to'ldiriladi. Fayl hech qayerga yuborilmaydi, faqat brauzeringizda o'qiladi.</p>
+ <div class="bar" style="margin-top:0"><label class="btn main" style="cursor:pointer">Excel faylni tanlash<input type="file" id="xfile" accept=".xlsx,.xls,.csv" hidden></label><button class="btn" id="pastebtn">Jadval matnini qo'yish</button></div>
+ <div id="pastebox" hidden><label>Jadvalni nusxalab qo'ying<small>Excel yoki sayt jadvalini belgilang (Ctrl+C) va shu yerga qo'ying (Ctrl+V). Har qatorda satr kodi va summalar bo'lishi kerak.</small><textarea id="pastetxt"></textarea></label><div class="bar"><button class="btn main" id="pasterun">To'ldirish</button></div></div>
+ <div id="impmsg"></div></div>
+ <div class="fields" style="margin-bottom:16px"><label>Korxona nomi<input data-p="cname" value="${esc(st.cname||'')}"></label><label>STIR<small>9 xonali raqam</small><input data-p="stir" inputmode="numeric" maxlength="9" value="${esc(st.stir||'')}"></label><label>Hisobot yili<input data-p="year" inputmode="numeric" value="${esc(st.year||'')}" placeholder="2025"></label></div>
+ ${tbl(["Ko'rsatkich","Boshi / o'tgan yil","Oxiri / hisobot yili"],[`<tr class="sec"><td colspan="3">1-shakl. Buxgalteriya balansi</td></tr>`,...FB.map(row),`<tr><td><b>Balans tengligi</b><small>Aktiv = o'z mablag'lari + majburiyatlar</small></td><td class="v">${chk(d0)}</td><td class="v">${chk(d1)}</td></tr>`,`<tr class="sec"><td colspan="3">2-shakl. Moliyaviy natijalar to'g'risidagi hisobot</td></tr>`,...FR.map(row)])}
+ <div class="bar"><button class="btn" id="sample">Namuna ma'lumot</button><button class="btn" id="clear">Tozalash</button><a class="btn main right" href="#m2">Tahlilni boshlash →</a></div>
+ <p class="note">«Namuna ma'lumot» — o'quv maqsadidagi shartli korxona («Namuna Logistika» MChJ). Uzoq muddatli majburiyatlar va joriy majburiyatlar birgalikda jami majburiyatlarni beradi.</p></div>`},
+m1(){const r=m1();return head(1,"Davlat iqtisodiy xavfsizligi chegaraviy (bo'sag'aviy) qiymatlar tizimi bilan baholanadi: haqiqiy ko'rsatkich chegaraga solishtiriladi va 0–1 oralig'ida normallashtiriladi. Chegaraviy qiymatlar S. Glazyev va V. Senchagov taklif etgan tizim asosida berilgan — ularni o'zgartirishingiz mumkin.")+
+ tbl(["Ko'rsatkich","Haqiqiy qiymat","Chegaraviy qiymat","Baho"],r.rows.map(x=>`<tr><td>${esc(x.name)}<small>${x.hi?'Chegaradan yuqori bo\'lishi kerak':'Chegaradan oshmasligi kerak'}</small></td><td>${numIn('sv.'+x.k,st.sv[x.k])}</td><td>${numIn('sth.'+x.k,st.sth[x.k]??x.th)}</td><td class="v ${x.has?(x.sc>=1?'g':x.sc>=.7?'m':'r'):''}">${x.has?f2(x.sc):'—'}</td></tr>`))+
+ (r.n?V(LC[lvl(r.pct)],`${Math.round(r.pct)}% · ${LV[lvl(r.pct)]}`,`Integral indeks — ${r.n} ta ko'rsatkich normallashtirilgan baholarining o'rtachasi. Bahosi 0,7 dan past ko'rsatkichlar milliy iqtisodiy xavfsizlikka asosiy tahdid manbalari hisoblanadi: ${esc(r.rows.filter(x=>x.has&&x.sc<.7).map(x=>x.name.split(',')[0]).join('; ')||'yo\'q')}.`):'')+
+ `<div class="bar"><button class="btn" id="stsample">Shartli misol</button></div><p class="note">«Shartli misol» — o'quv uchun to'qima raqamlar, rasmiy statistika emas. Haqiqiy qiymatlarni stat.uz, Markaziy bank va Moliya vazirligi ma'lumotlaridan oling.</p>`},
+m2(){if(!ready())return head(2,"")+empty;const r=m2(),d=D(1);
+ return head(2,"Tuzilmaning qoniqarsizligi ikki koeffitsiyent bo'yicha aniqlanadi: joriy likvidlik (K1) va o'z aylanma mablag'lari bilan ta'minlanganlik (K2). Agar ulardan biri me'yordan past bo'lsa — to'lov qobiliyatini 6 oyda tiklash koeffitsiyenti, ikkalasi ham me'yorda bo'lsa — 3 oyda yo'qotish koeffitsiyenti hisoblanadi.")+
+ `<div class="fields" style="margin-bottom:12px"><label>K1 me'yori<small>Joriy likvidlik uchun</small>${numIn('n1',st.n1)}</label><label>K2 me'yori<small>O'z aylanma mablag'lari bilan ta'minlanganlik uchun</small>${numIn('n2',st.n2)}</label></div>`+
+ tbl(["Ko'rsatkich","Yil boshi","Yil oxiri","Me'yor"],[tr("K1 — joriy likvidlik","Joriy aktivlar / joriy majburiyatlar",[f2(r.K10),f2(r.K1)],'≥ '+st.n1,cls(r.K1,st.n1,st.n1)),
+ tr("K2 — o'z aylanma mablag'lari bilan ta'minlanganlik","(O'z mablag'lari − uzoq muddatli aktivlar) / joriy aktivlar",[ready0()?f2(D(0).sos/D(0).ca):'—',f2(r.K2)],'≥ '+st.n2,cls(r.K2,st.n2,st.n2)),
+ r.bad?tr("Kv — to'lov qobiliyatini tiklash","[K1oxiri + 6/12 × (K1oxiri − K1boshi)] / K1me'yor",['',f2(r.kv)],'≥ 1',cls(r.kv,1,1)):tr("Ku — to'lov qobiliyatini yo'qotish","[K1oxiri + 3/12 × (K1oxiri − K1boshi)] / K1me'yor",['',f2(r.ku)],'≥ 1',cls(r.ku,1,1))])+
+ (r.bad?(r.kv>=1?V('m',"Tuzilma qoniqarsiz, ammo tiklash mumkin",`K1 yoki K2 me'yordan past, biroq Kv = ${f2(r.kv)} ≥ 1: korxona 6 oy ichida to'lov qobiliyatini tiklash imkoniyatiga ega. Bankrotlik tahdidini oldini olish uchun aylanma mablag'lar va qisqa muddatli qarzlarni boshqarish rejasi zarur.`):V('r',"Tuzilma qoniqarsiz — bankrotlik tahdidi",`K1 yoki K2 me'yordan past va Kv = ${f2(r.kv)} < 1: yaqin 6 oyda to'lov qobiliyatini tiklash imkoniyati yo'q. Sanatsiya choralari, qarzlarni qayta tuzish va zararli faoliyatni qisqartirish talab etiladi.`))
+ :(r.ku>=1?V('g',"Tuzilma qoniqarli",`Ikkala koeffitsiyent me'yorda va Ku = ${f2(r.ku)} ≥ 1: yaqin 3 oyda to'lov qobiliyatini yo'qotish xavfi yo'q.`):V('m',"Yo'qotish xavfi bor",`Koeffitsiyentlar hozircha me'yorda, ammo Ku = ${f2(r.ku)} < 1: K1 pasayish tendensiyasi saqlansa, 3 oyda to'lov qobiliyati yo'qolishi mumkin.`)))},
+m3(){const r=m3();const row=([k,t,g],auto)=>`<label class="chk"><input type="checkbox" ${auto?(r.a[k]?'checked':'')+' disabled':`data-ck="${k}" ${st.ck[k]?'checked':''}`}><span>${esc(t)}<em class="${g==1?'r':'m'}">${g}-guruh</em>${auto?`<small style="display:block;color:var(--mut)">Hisobot ma'lumotlaridan avtomatik aniqlanadi</small>`:''}</span></label>`;
+ return head(3,"Bankrotlik belgilari ikki guruhga bo'linadi. 1-guruh — moliyaviy qiyinchiliklarning bevosita belgilari; 2-guruh — hozircha jiddiy emas, lekin noqulay sharoitda inqirozga olib kelishi mumkin bo'lgan omillar. Belgilarning bir qismi hisobotdan avtomatik aniqlanadi, qolganini korxona haqidagi ma'lumotlarga ko'ra belgilang.")+
+ (ready()?'':empty)+`<h3>Hisobotdan aniqlanadigan belgilar</h3>${S3A.map(x=>row(x,1)).join('')}<h3>Ekspert tomonidan belgilanadigan belgilar</h3>${S3M.map(x=>row(x,0)).join('')}`+
+ V(r.g1?'r':r.g2?'m':'g',`1-guruh: ${r.g1} ta · 2-guruh: ${r.g2} ta`,r.g1>=2?"Bir nechta 1-guruh belgilari mavjud — korxona bankrotlik xavfi zonasida, inqirozga qarshi boshqaruv choralarini zudlik bilan ko'rish kerak.":r.g1==1?"1-guruh belgisi mavjud — moliyaviy holat jiddiy kuzatuv va aniq choralarni talab qiladi.":r.g2?"Faqat 2-guruh belgilari mavjud — holat hozircha barqaror, ammo xavf omillarini bartaraf etish kerak.":"Bankrotlik belgilari aniqlanmadi.")},
+m4(){if(!ready())return head(4,"")+empty;const d=D(1),d0=D(0),h0=ready0();const p1=integ(1),p0=h0?integ(0):NaN;
+ return head(4,"Ichki tahdidlar to'rt guruhdagi 12 ta ko'rsatkich bo'yicha integral baholanadi. Har bir ko'rsatkich me'yorga solishtiriladi: me'yorda — 2 ball, chegaraviy — 1 ball, xavfli — 0 ball. Integral indeks = to'plangan ball / maksimal ball × 100%.")+
+ GR.map((g,gi)=>`<h3>${g}</h3>`+tbl(["Ko'rsatkich","Yil boshi","Yil oxiri","Me'yor"],IND.filter(x=>x[6]==gi).map(x=>{const v1=x[2](d),v0=h0?x[2](d0):NaN,f=x[7]?pc:f2;return tr(x[0],x[1],[f(v0),f(v1)],(x[5]?'≥ ':'≤ ')+(x[7]?pc(x[3]):x[3]),cls(v1,x[3],x[4],x[5]))}))).join('')+
+ V(LC[lvl(p1)],`${Math.round(p1)}% · ${LV[lvl(p1)]}`,`Integral indeks yil oxirida ${Math.round(p1)}%${h0?` (yil boshida ${Math.round(p0)}%, ${Math.round(p1)==Math.round(p0)?'o\'zgarmagan':p1>p0?'yaxshilangan':'yomonlashgan'})`:''}. Darajalar: 75%+ yuqori, 50–75% o'rta, 25–50% past, 25% dan kam — kritik. Ichki tahdid manbalari — qizil rangdagi ko'rsatkichlar.`)},
+m5(){if(!ready())return head(5,"")+empty;const a1=altman(D(1)),h0=ready0(),a0=h0?altman(D(0)):null;const z=(v,hi,lo)=>v>hi?'g':v>lo?'m':'r';
+ const fc=(k)=>a0?(a1[k]>=a0[k]?'↑ yaxshilanmoqda':'↓ yomonlashmoqda'):'—';
+ return head(5,"Potensial ichki tahdidlarni prognozlash uchun xorijiy diskriminant modellar qo'llanadi. Yil boshi va yil oxiri natijalarini solishtirish orqali tendensiya (prognoz) aniqlanadi. EBIT = soliq to'lagunga qadar foyda + foiz xarajatlari.")+
+ tbl(["Model","Yil boshi","Yil oxiri","Chegaralar","Tendensiya"],[
+ `<tr><td>Altman Z'' (rivojlanayotgan bozorlar)<small>6,56·X1 + 3,26·X2 + 6,72·X3 + 1,05·X4; X1 = aylanma kapital/aktivlar, X2 = taqsimlanmagan foyda/aktivlar, X3 = EBIT/aktivlar, X4 = o'z mablag'lari/majburiyatlar</small></td><td class="v">${a0?f2(a0.zpp):'—'}</td><td class="v ${z(a1.zpp,2.6,1.1)}">${f2(a1.zpp)}</td><td class="v">&gt;2,6 xavfsiz<br>&lt;1,1 xavfli</td><td class="v">${fc('zpp')}</td></tr>`,
+ `<tr><td>Altman Z' (yopiq kompaniyalar)<small>0,717·X1 + 0,847·X2 + 3,107·X3 + 0,42·X4 + 0,998·X5; X5 = tushum/aktivlar</small></td><td class="v">${a0?f2(a0.zp):'—'}</td><td class="v ${z(a1.zp,2.9,1.23)}">${f2(a1.zp)}</td><td class="v">&gt;2,9 xavfsiz<br>&lt;1,23 xavfli</td><td class="v">${fc('zp')}</td></tr>`,
+ `<tr><td>Taffler modeli<small>0,53·(soliqdan oldingi foyda/joriy majb.) + 0,13·(joriy aktivlar/majb.) + 0,18·(joriy majb./aktivlar) + 0,16·(tushum/aktivlar)</small></td><td class="v">${a0?f2(a0.taf,3):'—'}</td><td class="v ${z(a1.taf,.3,.2)}">${f2(a1.taf,3)}</td><td class="v">&gt;0,3 past xavf<br>&lt;0,2 yuqori xavf</td><td class="v">${fc('taf')}</td></tr>`,
+ `<tr><td>Springate modeli<small>1,03·X1 + 3,07·(EBIT/aktivlar) + 0,66·(soliqdan oldingi foyda/joriy majb.) + 0,4·(tushum/aktivlar)</small></td><td class="v">${a0?f2(a0.spr,3):'—'}</td><td class="v ${z(a1.spr,.862,.862)}">${f2(a1.spr,3)}</td><td class="v">&lt;0,862 bankrot</td><td class="v">${fc('spr')}</td></tr>`,
+ `<tr><td>Lis modeli<small>0,063·(joriy aktivlar/aktivlar) + 0,092·(asosiy faoliyat foydasi/aktivlar) + 0,057·(taqsimlanmagan foyda/aktivlar) + 0,001·(o'z mablag'lari/majb.)</small></td><td class="v">${a0?f2(a0.lis,4):'—'}</td><td class="v ${z(a1.lis,.037,.037)}">${f2(a1.lis,4)}</td><td class="v">&lt;0,037 yuqori xavf</td><td class="v">${fc('lis')}</td></tr>`])+
+ V(z(a1.zpp,2.6,1.1),"Altman Z'' = "+f2(a1.zpp),a1.zpp>2.6?"Moliyaviy barqarorlik zonasi: yaqin istiqbolda bankrotlik ehtimoli past.":a1.zpp>1.1?"«Kulrang» zona: bankrotlik ehtimoli o'rtacha, ko'rsatkichlarni muntazam kuzatish zarur.":"Xavf zonasi: bankrotlik ehtimoli yuqori.")+`<p class="note">Xorijiy modellar boshqa iqtisodiy sharoitlar uchun ishlab chiqilgan, shuning uchun natijalar 6-bo'limdagi MDH modellari bilan solishtirilishi kerak.</p>`},
+m6(){if(!ready())return head(6,"")+empty;const h0=ready0(),c=cis(D(1),h0?D(0):null),p=dbProb(c.db);
+ return head(6,"MDH olimlari xorijiy modellarni mahalliy hisobot va iqtisodiy sharoitlarga moslashtirgan. Quyida eng ko'p qo'llanadigan uchta model berilgan.")+
+ tbl(["Model","Natija","Xulosa"],[
+ `<tr><td>R. Sayfullin va G. Kadikov reyting modeli<small>R = 2·K1 + 0,1·K2 + 0,08·K3 + 0,45·K4 + K5; K1 — o'z aylanma mablag'lari bilan ta'minlanganlik, K2 — joriy likvidlik, K3 — aktivlar aylanuvchanligi, K4 — sotish rentabelligi, K5 — ROE</small></td><td class="v ${c.sk>=1?'g':'r'}">${f2(c.sk)}</td><td class="v">${c.sk>=1?'Qoniqarli (R ≥ 1)':'Qoniqarsiz (R &lt; 1)'}</td></tr>`,
+ `<tr><td>O. Davydova va A. Belikov (Irkutsk) modeli<small>R = 8,38·K1 + K2 + 0,054·K3 + 0,63·K4; K1 — aylanma kapital/aktivlar, K2 — sof foyda/o'z mablag'lari, K3 — tushum/aktivlar, K4 — sof foyda/xarajatlar</small></td><td class="v ${p[1]}">${f2(c.db,3)}</td><td class="v">Bankrotlik ehtimoli: ${p[0]}</td></tr>`,
+ `<tr><td>O. Zaytseva modeli<small>Kf = 0,25·X1 + 0,1·X2 + 0,2·X3 + 0,25·X4 + 0,1·X5 + 0,1·X6; X1 — zarar/o'z mablag'lari, X2 — kreditorlik/debitorlik, X3 — joriy majb./likvid aktivlar, X4 — zarar/tushum, X5 — majburiyatlar/o'z mablag'lari, X6 — aktivlar/tushum. Me'yor: Kn = 1,57 + 0,1·X6(o'tgan yil)</small></td><td class="v ${c.zf<=c.zn?'g':'r'}">${f2(c.zf)} / ${f2(c.zn)}</td><td class="v">${c.zf<=c.zn?'Kf ≤ Kn — xavf past':'Kf &gt; Kn — bankrotlik ehtimoli yuqori'}</td></tr>`])+
+ `<h3>Zaytseva modeli omillari</h3>`+tbl(["Omil","Qiymat","Me'yoriy qiymat"],["X1 zarar/o'z mablag'lari","X2 kreditorlik/debitorlik","X3 joriy majb./likvid aktivlar","X4 zarar/tushum","X5 majburiyatlar/o'z mablag'lari","X6 aktivlar/tushum"].map((n,i)=>`<tr><td>${n}</td><td class="v">${f2(c.X[i])}</td><td class="v">${['0','1','7','0','0,7','o\'tgan yil'][i]}</td></tr>`))+
+ V(p[1],"Davydova–Belikov: bankrotlik ehtimoli "+p[0],`Uch modeldan ${[c.sk>=1,p[2]>=.5,c.zf<=c.zn].filter(Boolean).length} tasi korxona holatini qoniqarli deb baholaydi. Modellar natijalari bir-biriga zid bo'lsa, ko'pchilik modellar xulosasiga va 4-bo'limdagi integral bahoga tayaning.`)},
+m7(){const b=benford();return head(7,"Benford qonuniga ko'ra tabiiy shakllangan moliyaviy ma'lumotlarda birinchi raqam 1 bo'lgan sonlar taxminan 30,1%, 9 bo'lganlari esa atigi 4,6% ni tashkil etadi. Sun'iy to'qilgan yoki o'zgartirilgan summalar bu taqsimotdan chetga chiqadi. Tahlil uchun buxgalteriya jurnali, to'lov hujjatlari yoki xarajatlar summalarini (kamida 30 ta, yaxshisi 300+) quyidagi maydonga joylashtiring.")+
+ `<label>Summalar ro'yxati<small>Har qatorga bitta summa yoki Excel'dan ustunni nusxalab qo'ying. 10 dan kichik sonlar hisobga olinmaydi.</small><textarea data-p="bt" placeholder="1 250 000&#10;348 900&#10;2 015 300&#10;...">${esc(st.bt||'')}</textarea></label>
+ <div class="bar"><button class="btn" id="bsample">Shartli misol (500 ta summa)</button></div>`+
+ (b?tbl(["Birinchi raqam","Soni","Haqiqiy ulush","Benford bo'yicha","Taqsimot"],b.rows.map(r=>`<tr><td><b>${r.d}</b></td><td class="v">${r.c}</td><td class="v ${Math.abs(r.o-r.e)>.03?'r':''}">${pc(r.o)}</td><td class="v">${pc(r.e)}</td><td><div class="hbar"><i style="width:${Math.min(100,r.o/.35*100)}%"></i></div><div class="hbar exp" style="margin-top:3px"><i style="width:${r.e/.35*100}%"></i></div></td></tr>`))+
+ tbl(["Test","Natija","Chegaraviy qiymat"],[`<tr><td>O'rtacha mutlaq og'ish (MAD, Nigrini)</td><td class="v ${b.mc}">${b.mad.toFixed(4)}</td><td class="v">&lt;0,012 qabul qilinadi; &gt;0,015 mos emas</td></tr>`,`<tr><td>Xi-kvadrat (8 erkinlik darajasi)</td><td class="v ${b.chi>15.51?'r':'g'}">${f2(b.chi)}</td><td class="v">&lt;15,51 (5% ahamiyatlilik)</td></tr>`,`<tr><td>«Yumaloq» summalar (1000 ga karrali)</td><td class="v ${b.round/b.total>.2?'r':''}">${b.round} ta (${pc(b.round/b.total)})</td><td class="v">ulush yuqori bo'lsa — tekshirish</td></tr>`,`<tr><td>Takrorlanuvchi summalar</td><td class="v ${b.dup>b.total*.05?'m':''}">${b.dup} ta</td><td class="v">bir xil summalar — ikki marta to'lov xavfi</td></tr>`])+
+ V(b.mc,b.mt,`${b.N} ta summa tahlil qilindi. Har bir qatorda yuqori (to'q sariq) ustun — haqiqiy taqsimot, pastki (to'q yashil) ustun — Benford taqsimoti. Qizil rangdagi raqamlar bilan boshlanadigan summalarni birlamchi hujjatlar bilan tanlab tekshirish tavsiya etiladi. Benford testi qoidabuzarlikni isbotlamaydi, faqat tekshiruv yo'nalishini ko'rsatadi.`):`<p class="note">Natija chiqishi uchun kamida 30 ta summa kiriting.</p>`)},
+m8(){if(!ready()||!ready0())return head(8,"Bu bo'lim ikki davr ma'lumotlarini talab qiladi.")+empty.replace("1-shakl va 2-shakl qatorlarini","ikkala ustunni (yil boshi/o'tgan yil va yil oxiri/hisobot yili)");
+ const d=D(1),d0=D(0);const a0=d0.np/d0.rev,b0=d0.rev/d0.ta,c0=d0.ta/d0.eq,a1=d.np/d.rev,b1=d.rev/d.ta,c1=d.ta/d.eq;const R0=a0*b0*c0,R1=a1*b1*c1;
+ const fa=(a1-a0)*b0*c0,fb=a1*(b1-b0)*c0,fc=a1*b1*(c1-c0);const m0=d0.op/d0.rev,m1=d.op/d.rev;const pv=(d.rev-d0.rev)*m0,pm=d.rev*(m1-m0);
+ const sg=v=>(v>=0?'+':'')+(v*100).toFixed(2)+' p.p.';const sb=v=>(v>=0?'+':'')+big(v);
+ return head(8,"Omilli tahlil zanjirli almashtirish usulida bajariladi. O'z kapitali rentabelligi DuPont modeli bo'yicha uch omilga ajratiladi: ROE = sotish rentabelligi × aktivlar aylanuvchanligi × moliyaviy richag. Asosiy faoliyat foydasining o'zgarishi esa sotish hajmi va rentabellik omillariga ajratiladi.")+
+ `<h3>DuPont modeli: ROE o'zgarishi</h3>`+tbl(["Omil","O'tgan yil","Hisobot yili","ROE ga ta'siri"],[tr("Sotish rentabelligi (a)","Sof foyda / tushum",[pc(a0),pc(a1),sg(fa)],undefined,fa>=0?'g':'r'),tr("Aktivlar aylanuvchanligi (b)","Tushum / aktivlar",[f2(b0),f2(b1),sg(fb)],undefined,fb>=0?'g':'r'),tr("Moliyaviy richag (c)","Aktivlar / o'z mablag'lari",[f2(c0),f2(c1),sg(fc)],undefined,fc>=0?'g':'r'),
+ `<tr class="sec"><td>ROE = a × b × c</td><td class="v">${pc(R0)}</td><td class="v">${pc(R1)}</td><td class="v">${sg(R1-R0)}</td></tr>`])+
+ `<h3>Asosiy faoliyat foydasining o'zgarishi, ming so'm</h3>`+tbl(["Omil","Hisob","Ta'siri"],[tr("Sotish hajmining o'zgarishi","(Tushum₁ − Tushum₀) × rentabellik₀",[sb(pv)],undefined,pv>=0?'g':'r'),tr("Sotish rentabelligining o'zgarishi","Tushum₁ × (rentabellik₁ − rentabellik₀)",[sb(pm)],undefined,pm>=0?'g':'r'),`<tr class="sec"><td>Jami o'zgarish</td><td class="v"></td><td class="v">${sb(d.op-d0.op)}</td></tr>`])+
+ V(R1>=R0?'g':'r',`ROE: ${pc(R0)} → ${pc(R1)}`,`Eng kuchli ta'sir ko'rsatgan omil — ${[["sotish rentabelligi",fa],["aktivlar aylanuvchanligi",fb],["moliyaviy richag",fc]].sort((x,y)=>Math.abs(y[1])-Math.abs(x[1]))[0][0]}. ${fc>0&&fc>Math.abs(fa)?"Diqqat: rentabellik o'sishi asosan qarz yukining oshishi hisobiga — bu moliyaviy xavfsizlikka tahdid.":''}`)},
+m9(){if(!ready())return head(9,"")+empty;const d=D(1),t=stabType(d),T=STT[t.t];const sg=b=>b?'1':'0';
+ return head(9,"Moliyaviy barqarorlik turi zaxiralarni qoplash manbalarining yetarliligi bo'yicha uch komponentli ko'rsatkich S = {S1; S2; S3} orqali aniqlanadi. Natijani ko'rsatkichlar tizimi to'ldiradi.")+
+ tbl(["Ko'rsatkich","Hisob","Qiymat, ming so'm"],[tr("Zaxiralar (Z)","",[big(d.inv)]),tr("O'z aylanma mablag'lari (O'AM)","O'z mablag'lari − uzoq muddatli aktivlar",[big(d.sos)]),tr("Funksional kapital (FK)","O'AM + uzoq muddatli majburiyatlar",[big(d.sos+d.ltl)]),tr("Asosiy manbalar jami (AM)","FK + qisqa muddatli kreditlar",[big(d.sos+d.ltl+d.stl)]),
+ tr("S1 = O'AM − Z","",[big(t.S1)],undefined,t.S1>=0?'g':'r'),tr("S2 = FK − Z","",[big(t.S2)],undefined,t.S2>=0?'g':'r'),tr("S3 = AM − Z","",[big(t.S3)],undefined,t.S3>=0?'g':'r')])+
+ V(T[1],`S = {${t.k.map(sg).join('; ')}} — ${T[0]}`,T[2])+
+ `<h3>Moliyaviy barqarorlik ko'rsatkichlari tizimi</h3>`+tbl(["Ko'rsatkich","Qiymat","Me'yor"],[tr("Avtonomiya","O'z mablag'lari / balans",[f2(d.eq/d.ta)],'≥ 0,5',cls(d.eq/d.ta,.5,.4)),tr("Moliyaviy leveraj","Majburiyatlar / o'z mablag'lari",[f2(d.tl/d.eq)],'≤ 1',cls(d.tl/d.eq,1,1.5,0)),tr("Manyovrlilik","O'AM / o'z mablag'lari",[f2(d.sos/d.eq)],'0,2–0,5',cls(d.sos/d.eq,.2,0)),
+ tr("Zaxiralarning o'z manbalari bilan ta'minlanganligi","O'AM / zaxiralar",[f2(d.sos/d.inv)],'≥ 0,6',cls(d.sos/d.inv,.6,.3)),tr("Moliyaviy barqarorlik","(O'z mablag'lari + uzoq muddatli majb.) / balans",[f2((d.eq+d.ltl)/d.ta)],'≥ 0,75',cls((d.eq+d.ltl)/d.ta,.75,.6))])},
+m10(){const c=cfCalc(),ok=cfReady(),dn=ready()?D(1):null;const s=v=>v>=0?'+':'−';
+ const prof={"+−−":"Sog'lom korxona: operatsion faoliyat investitsiyalar va qarzlarni qaytarishni moliyalashtiradi.","+−+":"O'sayotgan korxona: investitsiyalar operatsion oqim va yangi qarzlar hisobidan.","++−":"Faoliyatni qisqartirish: aktivlar sotilib, qarzlar qaytarilmoqda.","+++":"Pul to'planmoqda: yirik investitsiya yoki sotib olishga tayyorgarlik bo'lishi mumkin.",
+ "−−+":"Xavfli: operatsion zarar va investitsiyalar qarzlar hisobidan moliyalashtirilmoqda.","−+−":"Inqiroz: aktivlar sotilib, ham operatsion zarar, ham qarzlar qoplanmoqda.","−++":"Jiddiy xavf: operatsion zarar aktivlar sotish va qarzlar bilan qoplanmoqda.","−−−":"Kritik: barcha faoliyat turlari bo'yicha pul chiqib ketmoqda, zaxira tugamoqda."};
+ const key=s(c.on)+s(c.in)+s(c.fn);
+ return head(10,"Pul oqimlari to'g'risidagi hisobot (4-shakl) ma'lumotlari asosida pul oqimlarining likvidligi, samaradorligi va yetarliligi baholanadi, faoliyat turlari bo'yicha sof oqimlar belgisi (profil) korxonaning rivojlanish bosqichini ko'rsatadi. Summalar ming so'mda.")+
+ `<div class="fields">${CF.map(([k,n])=>`<label>${esc(n)}${numIn('cf.'+k,st.cf[k]!==undefined&&st.cf[k]!==''?big(num(st.cf[k])):'')}</label>`).join('')}</div><div class="bar"><button class="btn" id="cfsample">Namuna ma'lumot</button></div>`+
+ (ok?tbl(["Ko'rsatkich","Hisob","Qiymat","Me'yor"],[tr("Operatsion faoliyatdan sof pul oqimi","",[big(c.on)],'> 0',c.on>=0?'g':'r'),tr("Investitsiya faoliyatidan sof pul oqimi","",[big(c.in)],''),tr("Moliyaviy faoliyatdan sof pul oqimi","",[big(c.fn)],''),tr("Jami sof pul oqimi","",[big(c.net)],'',c.net>=0?'g':'r'),tr("Davr oxiridagi pul qoldig'i","",[big(c.c1)],'> 0',c.c1>0?'g':'r'),
+ tr("Pul oqimi likvidligi","Jami kirim / jami chiqim",[f2(c.tin/c.tout)],'≥ 1',cls(c.tin/c.tout,1,.95)),tr("Pul oqimi samaradorligi","Sof pul oqimi / jami chiqim",[f2(c.net/c.tout,3)],'> 0',c.net>=0?'g':'r'),tr("O'z-o'zini moliyalashtirish","Operatsion sof oqim / (investitsiya + moliyaviy chiqim)",[f2(c.on/(c.io+c.fo))],'≥ 1',cls(c.on/(c.io+c.fo),1,.5)),
+ tr("Operatsion oqim yetarliligi","Operatsion kirim / operatsion chiqim",[f2(c.oi/c.oo)],'≥ 1,1',cls(c.oi/c.oo,1.1,1)),...(dn?[tr("Foydaning «pul sifati»","Operatsion sof oqim / sof foyda",[f2(c.on/dn.np)],'≥ 1',cls(c.on/dn.np,1,.6))]:[])])+
+ V(key=='+−−'||key=='+−+'?'g':key[0]=='+'?'m':'r',`Profil: ${key.split('').join(' / ')} (operatsion / investitsiya / moliyaviy)`,prof[key]||''):`<p class="note">Natija uchun kirim va chiqim summalarini kiriting.</p>`)},
+m11(){if(!ready())return head(11,"")+empty;const s=sber(D(1));const nm=["K1 — mutlaq likvidlik","K2 — oraliq qoplash (tezkor likvidlik)","K3 — joriy likvidlik","K4 — o'z mablag'lari bilan ta'minlanganlik","K5 — sotish rentabelligi"];const fm=["(Pul + qisqa muddatli investitsiyalar) / joriy majb.","(Pul + qisqa muddatli investitsiyalar + debitorlar) / joriy majb.","Joriy aktivlar / joriy majb.","O'z mablag'lari / balans","Asosiy faoliyat foydasi / tushum"];
+ return head(11,"Kreditga layoqatlilik bank amaliyotida qo'llanadigan reyting usulida baholanadi (Rossiya Jamg'arma banki uslubi asosida). Har bir koeffitsiyent bo'yicha qarz oluvchi 1-, 2- yoki 3-sinfga kiritiladi, so'ng vaznlar bilan umumiy reyting S hisoblanadi.")+
+ tbl(["Koeffitsiyent","Qiymat","1-sinf","2-sinf","Sinf","Vazn"],s.K.map((k,i)=>`<tr><td>${nm[i]}<small>${fm[i]}</small></td><td class="v">${i==4?pc(k):f2(k)}</td><td class="v">≥ ${i==4?pc(s.T[i][0]):s.T[i][0]}</td><td class="v">${i==4?'0–15%':s.T[i][1]+'–'+s.T[i][0]}</td><td class="v ${['','g','m','r'][s.C[i]]}"><b>${s.C[i]}</b></td><td class="v">${s.W[i]}</td></tr>`))+
+ V(['','g','m','r'][s.cl],`S = ${f2(s.S)} · ${s.cl}-sinf qarz oluvchi`,['',"Kreditga layoqatli: bank qulay shartlarda (pasaytirilgan foiz, kam ta'minot) kredit berishi mumkin.","Kreditga layoqatliligi o'rtacha: kredit berish mumkin, ammo qo'shimcha ta'minot va kuzatuv talab etiladi.","Kreditga layoqatsiz: kredit berish yuqori xavf bilan bog'liq, odatda rad etiladi."][s.cl]+" Chegaralar: S ≤ 1,25 — 1-sinf; 1,25 &lt; S ≤ 2,35 — 2-sinf; S &gt; 2,35 — 3-sinf.")},
+m12(){const r=m12();return head(12,"Tashkilot iqtisodiy xavfsizligi funksional tarkibiy qismlar bo'yicha baholanadi. Moliyaviy tarkibiy qism 4-bo'limdagi integral indeksdan avtomatik olinadi, qolganlari ekspert usulida 0–100 ball bilan baholanadi. Vaznlar tarkibiy qismning tashkilot uchun ahamiyatini bildiradi (yig'indisi 1 ga teng bo'lishi tavsiya etiladi).")+
+ tbl(["Tarkibiy qism","Vazn","Baho, 0–100","Hissasi"],r.rows.map(x=>`<tr><td>${esc(x.n)}${x.k=='fin'?'<small>4-bo\'limdan avtomatik</small>':''}</td><td>${numIn('w12.'+x.k,x.w)}</td><td>${x.k=='fin'&&ready()?`<span class="v ${LC[lvl(x.v)]}">${Math.round(x.v)}</span>`:`<div class="rng"><input type="range" min="0" max="100" step="5" data-p="s12.${x.k}" value="${x.v}" aria-label="${esc(x.n)}"><b>${Math.round(x.v)}</b></div>`}</td><td class="v">${f2(x.w*x.v/ (r.ws||1),1)}</td></tr>`))+
+ `<p class="note">Vaznlar yig'indisi: <b class="${Math.abs(r.ws-1)<.001?'g':'m'}">${f2(r.ws)}</b></p>`+V(LC[lvl(r.pct)],`${Math.round(r.pct)}% · ${LV[lvl(r.pct)]}`,`Eng zaif tarkibiy qism — ${esc([...r.rows].sort((a,b)=>a.v-b.v)[0].n)}. Iqtisodiy xavfsizlik xizmati resurslarini birinchi navbatda shu yo'nalishga qaratish tavsiya etiladi.`)},
+m13(){const r=m13();return head(13,"Umumlashtiruvchi baho oldingi bo'limlarda olingan xususiy mezonlarni 0–1 shkalaga keltirib, vaznlar bilan birlashtirish orqali olinadi. Additiv usul (o'rtacha tortilgan) yaxshi va yomon mezonlarni bir-biri bilan «qoplaydi», multiplikativ usul (o'rtacha geometrik) esa bitta kritik mezonga sezgir.")+
+ (r.r.length<3?empty:tbl(["Xususiy mezon","Normallashtirilgan baho","Vazn"],r.r.map(([k,n,v])=>`<tr><td><a href="#${k}">${esc(n)}</a></td><td class="v ${v>=.75?'g':v>=.5?'m':'r'}">${f2(v)}</td><td>${numIn('w13.'+k,st.w13[k]??1)}</td></tr>`))+
+ tbl(["Usul","Natija","Daraja"],[`<tr><td>Additiv (o'rtacha tortilgan)</td><td class="v ${LC[lvl(r.add)]}">${f2(r.add,1)}%</td><td class="v">${LV[lvl(r.add)]}</td></tr>`,`<tr><td>Multiplikativ (o'rtacha geometrik)</td><td class="v ${LC[lvl(r.geo)]}">${f2(r.geo,1)}%</td><td class="v">${LV[lvl(r.geo)]}</td></tr>`])+
+ V(LC[lvl(r.add)],`Umumlashtiruvchi baho: ${Math.round(r.add)}% · ${LV[lvl(r.add)]}`,`Additiv baho ${Math.round(r.add)}%, multiplikativ baho ${Math.round(r.geo)}%. ${r.add-r.geo>10?"Ikki usul o'rtasidagi katta farq mezonlardan biri kritik darajada ekanini ko'rsatadi — uni alohida tahlil qiling.":"Mezonlar nisbatan bir tekis — umumiy holat ishonchli baholangan."}`))},
+m14(){const r=m14();const row=([k,t],auto)=>`<label class="chk"><input type="checkbox" ${auto?(r.a[k]?'checked':'')+' disabled':`data-ck="${k}" ${st.ck[k]?'checked':''}`}><span>${esc(t)}${auto?`<small style="display:block;color:var(--mut)">Hisobot ma'lumotlaridan avtomatik aniqlanadi</small>`:''}</span></label>`;
+ return head(14,"Tashkilotga zarar yetkazish (mulkni talon-taroj qilish, firibgarlik, aktivlarni olib chiqish) belgilari moliyaviy hisobotdagi g'ayrioddiy nisbatlar va ichki nazorat ma'lumotlari orqali aniqlanadi. Har bir belgi qoidabuzarlikning isboti emas, balki chuqur tekshiruv uchun signal hisoblanadi.")+(ready()?'':empty)+
+ `<h3>Hisobot tahlilidan aniqlanadigan belgilar</h3>${S14A.map(x=>row(x,1)).join('')}<h3>Ichki nazorat va tekshiruvda aniqlanadigan belgilar</h3>${S14M.map(x=>row(x,0)).join('')}`+
+ V(r.n==0?'g':r.n<=2?'m':'r',`${r.n} ta belgi aniqlandi`,r.n==0?"Zarar yetkazish belgilari aniqlanmadi.":r.n<=2?"Alohida belgilar mavjud — tegishli operatsiyalarni tanlab tekshirish tavsiya etiladi (7-bo'limdagi Benford testi bilan to'ldiring).":"Ko'plab belgilar mavjud — ichki audit yoki xizmat tekshiruvini o'tkazish, iqtisodiy xavfsizlik xizmatini jalb qilish zarur.")}
+};
+
+
+// ---------- import (openinfo.uz / soliq: satr kodlari bo'yicha) ----------
+const MAP1={nca:['130'],inv:['140'],rec:['210'],stfi:['370'],cash:['320'],ca:['390'],eq:['480'],re:['450'],ltl:['490'],stl:['730','740'],ap:['601'],cl:['600']};
+const MAP2={rev:['010','i'],cogs:['020','e'],op:['100','n'],int:['180','e'],ebt:['240','n'],np:['270','n']};
+let impMsg='';
+const toN=v=>{if(v===null||v===undefined||v==='')return null;if(typeof v=='number')return v;const t=String(v).replace(/[\s  ]/g,'').replace(/^\((.*)\)$/,'-$1').replace(',','.');return /^-?\d+(\.\d+)?$/.test(t)?parseFloat(t):null};
+const parseRows=rows=>{let form=0,codeCol=-1;const f1={},f2={};const meta={};
+ rows.forEach(row=>{const cells=row.map(c=>c==null?'':c);const txt=cells.map(String).join(' ').toLowerCase();
+  if(/форма\s*№?\s*1\b|1-shakl|бухгалтерлик баланс|бухгалтерский баланс|buxgalteriya balans/.test(txt))form=1;
+  if(/форма\s*№?\s*2\b|2-shakl|молиявий натижалар|финансовых результат|moliyaviy natijalar|молиявий ҳисоботлар тўғрисидаги/.test(txt))form=2;
+  const hc=cells.findIndex(c=>/код|kod|коди/i.test(String(c))&&String(c).length<25);if(hc>=0)codeCol=hc;
+  if(/стир|stir|инн/i.test(String(cells[0]))){const n=cells.slice(1).map(String).join('').replace(/\D/g,'');if(n.length==9)meta.stir=n}
+  if(/^(тўлиқ|to'liq|полное)/i.test(String(cells[0]).trim())&&cells[1])meta.cname=String(cells[1]).trim();
+  if(/ҳисобот йили|hisobot yili|отчетный год/i.test(String(cells[0]))){const m=String(cells[1]).match(/(20\d\d)/);if(m)meta.year=m[1]}
+  if(!form)return;
+  let ci=codeCol>=0&&/^\d{1,3}$/.test(String(cells[codeCol]).trim())?codeCol:cells.findIndex((c,i)=>i<3&&/^\d{3}$/.test(String(c).trim()));
+  if(ci<0)return;const code=String(cells[ci]).trim().padStart(3,'0');const nums=cells.slice(ci+1).map(toN);
+  while(nums.length&&nums[nums.length-1]===null)nums.pop();if(!nums.length)return;
+  if(form==1){if(!(code in f1))f1[code]=[nums[0]||0,nums[1]||0]}
+  else{if(code in f2)return;if(nums.length>=3)f2[code]=[[nums[0]||0,nums[1]||0],[nums[2]||0,nums[3]||0]];else f2[code]=[[nums[0]||0,0],[nums[1]||0,0]]}});
+ return{f1,f2,meta}};
+const applyImport=({f1,f2,meta})=>{let n=0;const miss=[];
+ Object.entries(MAP1).forEach(([k,codes])=>{const have=codes.filter(c=>c in f1);if(!have.length){miss.push(k);return}st.f[k]=[0,1].map(p=>String(have.reduce((a,c)=>a+f1[c][p],0)));n++});
+ Object.entries(MAP2).forEach(([k,[c,m]])=>{if(!(c in f2)){miss.push(k);return}st.f[k]=[0,1].map(p=>{const [inc,exp]=f2[c][p];return String(m=='i'?inc:m=='e'?(exp||inc):inc-exp)});n++});
+ if(meta.cname)st.cname=meta.cname;if(meta.stir)st.stir=meta.stir;if(meta.year)st.year=meta.year;save();
+ const names=Object.fromEntries([...FB,...FR]);const d0=D(0),d1=D(1);const bad=[d0,d1].map(d=>{const a=num((f1['400']||[])[[d0,d1].indexOf(d)]),p=num((f1['780']||[])[[d0,d1].indexOf(d)]);return a&&p&&Math.abs(a-p)>1?[a,p]:null});
+ if(!n){impMsg=`<div class="imsg bad">Faylda 1-shakl va 2-shakl satr kodlari topilmadi. Fayl openinfo.uz yoki soliq kabineti formatida ekanini tekshiring yoki qatorlarni qo'lda kiriting.</div>`;return}
+ impMsg=`<div class="imsg ${miss.length?'warn':'ok'}"><b>${n} ta qator to'ldirildi</b>${meta.cname?' — '+esc(meta.cname):''}${meta.stir?', STIR '+meta.stir:''}${meta.year?', '+meta.year+'-yil':''}.${miss.length?`<br>Topilmagan qatorlar (qo'lda kiriting): ${miss.map(k=>esc(names[k])).join('; ')}.`:''}
+ ${bad.some(Boolean)?`<br><span class="r"><b>Diqqat:</b> hisobotning o'zida balans tengligi buzilgan — ${bad.map((b,i)=>b?`${i?'yil oxiri':'yil boshi'}: aktiv (400) ${big(b[0])} ≠ passiv (780) ${big(b[1])}`:'').filter(Boolean).join('; ')}. Natijalarni ehtiyotkorlik bilan talqin qiling.</span>`:''}</div>`};
+const loadXLSX=()=>new Promise((ok,no)=>{if(window.XLSX)return ok();const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';sc.onload=ok;sc.onerror=()=>no();document.head.appendChild(sc)});
+const importFile=async file=>{impMsg=`<div class="imsg">Fayl o'qilmoqda…</div>`;render();
+ try{await loadXLSX();const wb=XLSX.read(await file.arrayBuffer(),{type:'array'});let rows=[];wb.SheetNames.forEach(n=>{rows=rows.concat(XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,raw:true,defval:''}))});applyImport(parseRows(rows))}
+ catch(e){impMsg=`<div class="imsg bad">Faylni o'qib bo'lmadi. Excel (.xlsx yoki .xls) fayl ekanini tekshiring yoki «Jadval matnini qo'yish» usulidan foydalaning.</div>`}render()};
+
+// ---------- kirish (Supabase) ----------
+const CFG=window.IXP_CONFIG||{};const ON=!!(CFG.SUPABASE_URL&&CFG.SUPABASE_ANON_KEY&&window.supabase);
+const sb=ON?window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_ANON_KEY):null;
+let me=null,prof=null,authTab='in',authMsg='',admin={rows:null,res:[],q:''};
+const authView=()=>`<div class="panel auth"><p class="kicker">Kirish</p><h2>Platformaga kirish</h2><p class="theory">Platformadan TDIU «Korxonaning iqtisodiy xavfsizligi» fani talabalari foydalanadi. Ro'yxatdan o'tgach, o'qituvchi ruxsat berganidan keyin kirish ochiladi.</p>
+ <div class="tabs"><button class="btn" data-tab="in" aria-pressed="${authTab=='in'}">Kirish</button><button class="btn" data-tab="up" aria-pressed="${authTab=='up'}">Ro'yxatdan o'tish</button></div>
+ <form id="af" class="fields">${authTab=='up'?`<label>Familiya, ism, sharif<input name="fn" required autocomplete="name"></label><label>Guruh<small>Masalan: IH-70i</small><input name="gr" required></label>`:''}
+ <label>Email<input name="em" type="email" required autocomplete="email"></label><label>Parol<small>${authTab=='up'?'Kamida 6 ta belgi':''}</small><input name="pw" type="password" required minlength="6" autocomplete="${authTab=='up'?'new-password':'current-password'}"></label>
+ <button class="btn main" type="submit">${authTab=='up'?"Ro'yxatdan o'tish":'Kirish'}</button></form>${authMsg}</div>`;
+const pendingView=()=>`<div class="panel auth"><p class="kicker">Ruxsat kutilmoqda</p><h2>Arizangiz qabul qilindi</h2><p class="theory">${esc(prof?.full_name||'')}${prof?.group_name?', '+esc(prof.group_name):''} — o'qituvchi ruxsat berganidan so'ng platforma ochiladi. Sahifani keyinroq yangilang.</p><div class="bar"><button class="btn" id="recheck">Tekshirish</button><button class="btn" id="logout">Chiqish</button></div></div>`;
+const adminView=()=>{if(!admin.rows){loadAdmin();return `<div class="panel"><p>Yuklanmoqda…</p></div>`}
+ const q=admin.q.toLowerCase(),rows=admin.rows.filter(p=>!q||[p.full_name,p.group_name,p.email].join(' ').toLowerCase().includes(q));
+ const byU={};admin.res.forEach(x=>{(byU[x.user_id]=byU[x.user_id]||{})[x.module]=x});const wait=admin.rows.filter(p=>!p.approved&&p.role!='admin').length;
+ return `<div class="panel"><p class="kicker">Admin panel</p><h2>Talabalar va natijalar</h2><p class="theory">Jami ${admin.rows.length} ta foydalanuvchi, ruxsat kutayotganlar: <b class="${wait?'m':''}">${wait}</b>. Kvadratchalar — 14 ta bo'lim natijasi (yashil — yaxshi, sariq — o'rta, qizil — xavfli, kulrang — bajarilmagan). Kvadrat ustiga olib borsangiz, natija ko'rinadi.</p>
+ <div class="fields" style="margin-bottom:12px"><label>Qidirish<input id="aq" value="${esc(admin.q)}" placeholder="F.I.Sh., guruh yoki email"></label></div>
+ ${tbl(["Talaba","Holat","Bo'limlar","Amal"],rows.map(p=>{const u=byU[p.id]||{};return `<tr><td>${esc(p.full_name||'—')}<small>${esc(p.group_name||'')} · ${esc(p.email||'')}${p.role=='admin'?' · admin':''}</small></td><td class="v"><span class="pill ${p.approved||p.role=='admin'?'ok':'wait'}">${p.role=='admin'?'Admin':p.approved?'Ruxsat bor':'Kutmoqda'}</span></td><td><div class="mods">${MODS.map((m,i)=>{const x=u[i+1];return `<i class="${x?x.level:''}" title="${i+1}. ${x?esc(x.summary):'bajarilmagan'}"></i>`}).join('')}</div></td><td class="v">${p.role=='admin'?'':p.approved?`<button class="btn" data-rev="${p.id}">Bekor qilish</button>`:`<button class="btn main" data-ok="${p.id}">Ruxsat berish</button>`}</td></tr>`}))}
+ <div class="bar"><button class="btn" id="areload">Yangilash</button><button class="btn" id="acsv">Jadvalni nusxalash (Excel uchun)</button></div><p class="note" id="acsvnote"></p></div>`};
+const loadAdmin=async()=>{const [a,b]=await Promise.all([sb.from('profiles').select('id,full_name,group_name,email,approved,role,created_at').order('created_at',{ascending:false}),sb.from('results').select('user_id,module,summary,level,updated_at')]);
+ admin.rows=a.data||[];admin.res=b.data||[];render()};
+const loadProfile=async()=>{const {data}=await sb.from('profiles').select('*').eq('id',me.id).single();prof=data;
+ if(prof&&prof.state&&Object.keys(prof.state).length){st=Object.assign(st,prof.state);try{localStorage.setItem('ixp',JSON.stringify(st))}catch(e){}}};
+let tSave,tRes,lastRes='';
+if(ON)cloudSave=()=>{if(!prof?.approved)return;clearTimeout(tSave);tSave=setTimeout(()=>sb.from('profiles').update({state:st}).eq('id',me.id),2000);
+ clearTimeout(tRes);tRes=setTimeout(()=>{const rows=MODS.map((m,i)=>{const s=status(i+1);return s?{user_id:me.id,module:i+1,summary:s[1],level:s[0],updated_at:new Date().toISOString()}:null}).filter(Boolean);
+  const k=JSON.stringify(rows.map(x=>[x.module,x.summary]));if(k!==lastRes&&rows.length){lastRes=k;sb.from('results').upsert(rows)}},3000)};
+const gate=()=>{if(!ON)return null;if(!me)return authView();if(!prof)return `<div class="panel"><p>Yuklanmoqda…</p></div>`;if(!prof.approved&&prof.role!='admin')return pendingView();return null};
+const setNav=()=>{const a=document.getElementById('na'),o=document.getElementById('nout');if(a)a.hidden=!(prof&&prof.role=='admin');if(o)o.hidden=!me;const h=(location.hash||'').slice(1);if(a)a.setAttribute('aria-current',h=='admin'?'page':'false');if(h=='admin')document.getElementById('nh').setAttribute('aria-current','false')};
+document.addEventListener('submit',async e=>{if(e.target.id!='af')return;e.preventDefault();const f=new FormData(e.target);authMsg=`<p class="note">Bajarilmoqda…</p>`;render();
+ const em=String(f.get('em')).trim(),pw=String(f.get('pw'));let r;
+ if(authTab=='up'){r=await sb.auth.signUp({email:em,password:pw,options:{data:{full_name:String(f.get('fn')).trim(),group_name:String(f.get('gr')).trim()}}});
+  authMsg=r.error?`<div class="imsg bad">${esc(r.error.message)}</div>`:(r.data.session?'':`<div class="imsg ok">Ro'yxatdan o'tdingiz. Emailingizga kelgan havolani bosib tasdiqlang, so'ng «Kirish» orqali kiring.</div>`)}
+ else{r=await sb.auth.signInWithPassword({email:em,password:pw});authMsg=r.error?`<div class="imsg bad">Email yoki parol noto'g'ri.</div>`:''}render()});
+document.addEventListener('click',async e=>{const t=e.target;
+ if(t.dataset.tab){authTab=t.dataset.tab;authMsg='';render()}
+ if(t.id=='logout'||t.id=='nout'){e.preventDefault();authTab='in';authMsg='';await sb.auth.signOut()}
+ if(t.id=='recheck'){await loadProfile();render()}
+ if(t.dataset.ok||t.dataset.rev){t.disabled=true;await sb.from('profiles').update({approved:!!t.dataset.ok}).eq('id',t.dataset.ok||t.dataset.rev);await loadAdmin()}
+ if(t.id=='areload'){admin.rows=null;render()}
+ if(t.id=='acsv'){const byU={};admin.res.forEach(x=>{(byU[x.user_id]=byU[x.user_id]||{})[x.module]=x.summary});const lines=[['F.I.Sh.','Guruh','Email','Holat',...MODS.map((m,i)=>(i+1)+'-bo\'lim')].join('\t'),...admin.rows.filter(p=>p.role!='admin').map(p=>[p.full_name,p.group_name,p.email,p.approved?'ruxsat':'kutmoqda',...MODS.map((m,i)=>(byU[p.id]||{})[i+1]||'')].join('\t'))].join('\n');
+  try{await navigator.clipboard.writeText(lines);document.getElementById('acsvnote').textContent="Jadval nusxalandi — Excel'ga qo'ying (Ctrl+V)."}catch(err){document.getElementById('acsvnote').textContent="Nusxalab bo'lmadi."}}});
+document.addEventListener('input',e=>{if(e.target.id=='aq'){admin.q=e.target.value;clearTimeout(tm);tm=setTimeout(()=>{render();const n=document.getElementById('aq');n.focus();n.setSelectionRange(n.value.length,n.value.length)},400)}});
+const render=()=>{const h=(location.hash||'').slice(1);let html;const g=gate();setNav();if(g){app.innerHTML=g;return}if(h=='admin'&&prof&&prof.role=='admin'){app.innerHTML=adminView();return}
+ document.getElementById('nh').toggleAttribute('aria-current',!h);document.getElementById('nh').setAttribute('aria-current',!h||/^m/.test(h)?'page':'false');document.getElementById('nd').setAttribute('aria-current',h=='data'?'page':'false');
+ if(h=='data')html=VIEWS.data();else if(/^m(\d+)$/.test(h)&&+h.slice(1)>=1&&+h.slice(1)<=14){const i=+h.slice(1);html=`<div class="panel">${VIEWS['m'+i]()}${nav(i)}</div>`}else html=VIEWS.home();
+ app.innerHTML=html;const im=document.getElementById('impmsg');if(im)im.innerHTML=impMsg;document.getElementById('prog').innerHTML=MODS.map((m,i)=>{const s=status(i+1);return `<i class="${s?s[0]:''}"></i>`}).join('');
+ document.title=(/^m\d+$/.test(h)?h.slice(1)+'-bo\'lim · ':'')+"Iqtisodiy xavfsizlik — amaliy platforma"};
+const setP=(p,v)=>{const a=p.split('.');if(a[0]=='f'){st.f[a[1]]=st.f[a[1]]||['',''];st.f[a[1]][+a[2]]=v}else if(a.length==2){st[a[0]][a[1]]=v}else st[a[0]]=a[0]=='n1'||a[0]=='n2'?(num(v)||st[a[0]]):v;save()};
+let tm;app.addEventListener('input',e=>{const t=e.target;if(t.dataset.p){setP(t.dataset.p,t.value);if(t.type=='range'){render()}else{clearTimeout(tm);tm=setTimeout(()=>{const id=t.dataset.p,pos=t.selectionStart;render();const n=app.querySelector(`[data-p="${id}"]`);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}},700)}}});
+app.addEventListener('change',e=>{const t=e.target;if(t.id=='xfile'&&t.files[0]){importFile(t.files[0]);return}if(t.dataset.ck){st.ck[t.dataset.ck]=t.checked;save();render()}else if(t.dataset.p&&t.classList.contains('num')&&t.value){const p=t.dataset.p;if(/^(f|cf)\./.test(p))t.value=big(num(t.value))}});
+app.addEventListener('click',e=>{const id=e.target.id;if(id=='pastebtn'){document.getElementById('pastebox').hidden=false;document.getElementById('pastetxt').focus()}if(id=='pasterun'){applyImport(parseRows(document.getElementById('pastetxt').value.split(/\r?\n/).map(l=>l.split('\t'))));render()}
+ if(id=='sample'){Object.entries(SAMPLE).forEach(([k,v])=>st.f[k]=v.map(String));st.cname=st.cname||"«Namuna Logistika» MChJ";st.stir=st.stir||"123456789";st.year=st.year||"2025";if(!cfReady())Object.entries(CFS).forEach(([k,v])=>st.cf[k]=String(v));save();render()}
+ if(id=='clear'){if(e.target.dataset.arm){st.f={};save();render()}else{e.target.dataset.arm=1;e.target.textContent="Rostdan o'chirilsinmi? Yana bosing";setTimeout(()=>{e.target.textContent='Tozalash';delete e.target.dataset.arm},4000)}}
+ if(id=='cfsample'){Object.entries(CFS).forEach(([k,v])=>st.cf[k]=String(v));save();render()}
+ if(id=='stsample'){Object.entries(STS).forEach(([k,v])=>st.sv[k]=String(v));save();render()}
+ if(id=='bsample'){let s=12345;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;const out=[];for(let i=0;i<500;i++){out.push(Math.round(Math.pow(10,2+rnd()*5)).toLocaleString('ru-RU'))}st.bt=out.join('\n');save();render()}});
+addEventListener('hashchange',()=>{if(location.hash=='#admin')admin.rows=null;render();window.scrollTo(0,document.querySelector('main').offsetTop-8)});
+if(ON){sb.auth.onAuthStateChange(async(ev,session)=>{const u=session?.user||null;if(u&&(!me||me.id!==u.id)){me=u;prof=null;render();await loadProfile()}else if(!u){me=null;prof=null}render()})}
+render();
+}
+</script>
+</body>
+</html>
